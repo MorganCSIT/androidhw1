@@ -3,7 +3,7 @@ package vms.android.simplequiz
 import androidx.lifecycle.ViewModel
 
 class QuestionViewModel: ViewModel() {
-    private val questionBank = listOf(  Question(R.string.question_1, true),
+    val questionBank = listOf(  Question(R.string.question_1, true),
         Question(R.string.question_2, true),
         Question(R.string.question_3, false),
         Question(R.string.question_4, false),
@@ -14,10 +14,9 @@ class QuestionViewModel: ViewModel() {
         Question(R.string.question_9, true),
         Question(R.string.question_10, false))
 
-    private var currentIndex = 0
+    var currentIndex = 0
     var userAnswered = false  // add this line
-    var correctAnswers = 0
-    var incorrectAnswers = 0
+
 
     val currentQuestionText: Int
         get() = questionBank[currentIndex].textResId

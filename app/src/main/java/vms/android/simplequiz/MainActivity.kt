@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity() {
 
     private val questionViewModel: QuestionViewModel by lazy {ViewModelProvider(this).get(QuestionViewModel:: class.java)}
     private val TAG = "MainActivity"
+    var correctAnswers = 0
+    var incorrectAnswers = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,29 +85,30 @@ class MainActivity : AppCompatActivity() {
         displayedQuestion.setText(questionTextResId)
     }
 
+    private fun showQuizResult() {
+        val totalQuestions = questionViewModel.questionBank.size
+        val score = ((correctAnswers.toDouble() / totalQuestions) * 100).toInt()
+        Toast.makeText(this, "You scored: $score%", Toast.LENGTH_SHORT).show()
+    }
+
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = questionViewModel.currentQuestionAnswer
 
-        if (questionViewModel.userAnswered) {  // check if the user has already answered the question
-            Toast.makeText(this, "You have already answered this question", Toast.LENGTH_LONG).show()
-            return
+        if (questionViewModel.userAnswered) {
+            Toast.makeText(this, "You have already answered this question", Toast.LENGTH_SHORT).show()
+        } else {
+            if (userAnswer == correctAnswer) {
+                correctAnswers++
+            } else {
+                incorrectAnswers++
+            }
+            questionViewModel.userAnswered = true
+
+            if (questionViewModel.currentIndex == questionViewModel.questionBank.size - 1) {
+                showQuizResult()
+            }
         }
-
-        questionViewModel.userAnswered = true  // update the userAnswered variable
-
-//        if (userAnswer == correctAnswer) {
-//            Toast.makeText(this, R.string.correct_toast, Toast.LENGTH_LONG).show()
-//        } else {
-//            Toast.makeText(this, R.string.incorrect_toast, Toast.LENGTH_LONG).show()
-//        }
-
-        var messageResId =  if (userAnswer == correctAnswer) {
-                                R.string.correct_toast
-                            } else {
-                                R.string.incorrect_toast
-                            }
-
-        Toast.makeText(this, messageResId, Toast.LENGTH_LONG).show()
     }
+
 
 }

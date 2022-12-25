@@ -20,5 +20,6 @@
 
     <string name="correct_toast">Your answer is correct!</string>
     <string name="incorrect_toast">Your answer is incorrect. Try again!</string>
+    <string name="final_score">Your percentage score: </string>
 
 </resources>
